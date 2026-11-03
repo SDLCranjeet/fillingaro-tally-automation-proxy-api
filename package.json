@@ -1,0 +1,16 @@
+{
+  "name": "automation-bridge",
+  "version": "0.0.1",
+  "description": "Windows RDP service on port 2002 that runs the Tally AutoHotkey scripts",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.9"
+  }
+}
