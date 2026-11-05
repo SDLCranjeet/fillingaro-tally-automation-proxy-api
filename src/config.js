@@ -1,7 +1,7 @@
 // Settings read from .env (see .env.example). Throws at startup if the token is missing.
 const PORT = Number(process.env.AUTOMATION_BRIDGE_PORT) || 2002;
 // Loopback only: cloudflared runs on this machine and forwards to it
-const HOST = '127.0.0.1';
+const HOST = '0.0.0.0';
 const TOKEN = process.env.AUTOMATION_BRIDGE_TOKEN;
 const AHK_EXE_PATH = process.env.AHK_EXE_PATH || 'C:\\Program Files\\AutoHotkey\\v2\\AutoHotkey64.exe';
 
