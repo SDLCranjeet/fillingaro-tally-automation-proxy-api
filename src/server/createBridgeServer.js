@@ -4,6 +4,7 @@ const { sendJson } = require('../http/sendJson');
 const { handleHealth } = require('../controllers/handleHealth');
 const { handleNodeVersion } = require('../controllers/handleNodeVersion');
 const { handleWindowsVersion } = require('../controllers/handleWindowsVersion');
+const { handleCurrentUser } = require('../controllers/handleCurrentUser');
 const { handleOpenTally } = require('../controllers/handleOpenTally');
 const { handleTallySessions } = require('../controllers/handleTallySessions');
 
@@ -12,6 +13,7 @@ const routes = {
   'GET /health': handleHealth,
   'GET /system/node-version': handleNodeVersion,
   'GET /system/windows-version': handleWindowsVersion,
+  'GET /system/current-user': handleCurrentUser,
   'POST /tally/open': handleOpenTally,
   'GET /tally/sessions': handleTallySessions,
 };
