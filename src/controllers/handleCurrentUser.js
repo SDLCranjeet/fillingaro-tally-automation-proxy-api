@@ -8,10 +8,10 @@ const run = (file, args) =>
     );
   });
 
-// Step 1: netstat -ano  ->  PID listening on port 9000
-const findPid9000 = (stdout) => {
+// Step 1: netstat -ano  ->  PID listening on port 8000
+const findPid8000 = (stdout) => {
   for (const line of stdout.split(/\r?\n/)) {
-    const m = line.trim().match(/^TCP\s+\S+[:.]9000\s+\S+\s+LISTENING\s+(\d+)$/i);
+    const m = line.trim().match(/^TCP\s+\S+[:.]8000\s+\S+\s+LISTENING\s+(\d+)$/i);
     if (m) return m[1];
   }
   return null;
@@ -57,16 +57,16 @@ const findSessionRow = (stdout, targetSessionId) => {
   return null;
 };
 
-// Returns full session info for the RDP user that has Tally open on port 9000.
+// Returns full session info for the RDP user that has Tally open on port 8000.
 // Uses netstat -> tasklist -> query user: all native commands, works from a service/Session 0.
-const getRdpUserForPort9000 = async () => {
+const getRdpUserForPort8000 = async () => {
   const [netstat, quser] = await Promise.all([
     run('netstat.exe', ['-ano', '-p', 'TCP']),
     run('query.exe', ['user']),
   ]);
 
-  const pid = findPid9000(netstat.stdout);
-  console.log(`[current-user] port 9000 PID: ${pid}`);
+  const pid = findPid8000(netstat.stdout);
+  console.log(`[current-user] port 8000 PID: ${pid}`);
   if (!pid) return null;
 
   const tasklist = await run('tasklist.exe', ['/V', '/FO', 'CSV', '/NH', '/FI', `PID eq ${pid}`]);
@@ -91,7 +91,7 @@ const getRdpUserForPort9000 = async () => {
 
 // Answers GET /system/current-user
 const handleCurrentUser = async (req, res) => {
-  const data = await getRdpUserForPort9000();
+  const data = await getRdpUserForPort8000();
   return sendJson(res, 200, { status: 'Success', data });
 };
 

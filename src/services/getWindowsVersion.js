@@ -27,7 +27,7 @@ const getWindowsVersion = async () => {
     userName: os.userInfo().username,
     tallyUsers: sessions ? [...new Set(sessions.processes.map((p) => p.userName).filter(Boolean))] : null,
     loggedInUsers: sessions ? sessions.loggedInUsers.map((u) => u.userName) : null,
-    port9000User: sessions?.port9000?.userName ?? null,
+    port8000User: sessions?.port8000?.userName ?? null,
   };
 };
 

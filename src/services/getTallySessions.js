@@ -89,22 +89,22 @@ const getTallySessions = async () => {
     .filter((line) => line.startsWith('"'))
     .map((line) => parseTaskRow(line, portsByPid));
 
-  // PID-first port9000 lookup: works regardless of Tally's executable name.
-  // 1. Find which PID netstat says is listening on 9000.
+  // PID-first port8000 lookup: works regardless of Tally's executable name.
+  // 1. Find which PID netstat says is listening on 8000.
   // 2. If that PID already appears in the tally.exe tasklist, reuse it.
   // 3. Otherwise query tasklist again for that specific PID (covers TallyPrime.EXE etc).
-  let port9000 = null;
-  const pid9000 = findPidOnPort(netstat.stdout, 9000);
-  if (pid9000) {
-    let proc = processes.find((p) => String(p.pid) === pid9000);
+  let port8000 = null;
+  const pid8000 = findPidOnPort(netstat.stdout, 8000);
+  if (pid8000) {
+    let proc = processes.find((p) => String(p.pid) === pid8000);
     if (!proc) {
       // Tally is running under a different executable name — query by PID directly
-      const pidTask = await run('tasklist.exe', ['/V', '/FO', 'CSV', '/NH', '/FI', `PID eq ${pid9000}`]);
+      const pidTask = await run('tasklist.exe', ['/V', '/FO', 'CSV', '/NH', '/FI', `PID eq ${pid8000}`]);
       const pidLine = pidTask.stdout.split(/\r?\n/).find((l) => l.startsWith('"'));
       if (pidLine) proc = parseTaskRow(pidLine, portsByPid);
     }
     if (proc) {
-      port9000 = { port: 9000, userName: proc.userName, pid: proc.pid, sessionId: proc.sessionId };
+      port8000 = { port: 8000, userName: proc.userName, pid: proc.pid, sessionId: proc.sessionId };
     }
   }
 
@@ -115,7 +115,7 @@ const getTallySessions = async () => {
     tallyOpen: processes.some((p) => p.sessionId === Number(sessionId)),
   }));
 
-  return { count: processes.length, processes, loggedInUsers, port9000 };
+  return { count: processes.length, processes, loggedInUsers, port8000 };
 };
 
 module.exports = { getTallySessions };
